@@ -23,6 +23,10 @@ public class NinjaMessageEncoder extends MessageToMessageEncoder<NinjaMessage> {
             byteBuf.writeIntLE(NinjaMessageTypeEnum.ROOM);
             byteBuf.writeIntLE(((NinjaRoomMessage) msg).getIfP1());
         }
+        else if (msg instanceof NinjaOperationMessage){
+            byteBuf.writeIntLE(NinjaMessageTypeEnum.OPERATION);
+            writeOperation(((NinjaOperationMessage) msg).getOperation(), byteBuf);
+        }
         else if (msg instanceof NinjaFrameMessage){
             byteBuf.writeIntLE(NinjaMessageTypeEnum.FRAME);
             NinjaFrameMessage frameMessage = (NinjaFrameMessage) msg;
@@ -35,20 +39,22 @@ public class NinjaMessageEncoder extends MessageToMessageEncoder<NinjaMessage> {
                 byteBuf.writeIntLE(frame.getFrameNo());
                 Map<Integer, BattleOperation> operationMap = frame.getOperationMap();
                 operationMap.forEach((k,v) -> {
-                    byteBuf.writeIntLE(v.getPlayerId());
-                    byteBuf.writeIntLE(v.getOperationType());
-                    if (v.getOperationType() == NinjaOperationTypeEnum.MOVE){
-                        FVector3 position = v.getPosition();
-                        byteBuf.writeLongLE(position.getX());
-                        byteBuf.writeLongLE(position.getZ());
-                    }
-                    else{
-                        byteBuf.writeIntLE(v.getDirection());
-                    }
+                    writeOperation(v, byteBuf);
                 });
             });
         }
         DatagramPacket datagramPacket = new DatagramPacket(byteBuf, NinjaMessageDecoder.getAddressByPlayerId(msg.getPlayerId()));
         out.add(datagramPacket);
+    }
+
+    private void writeOperation(BattleOperation operation, ByteBuf byteBuf){
+        byteBuf.writeIntLE(operation.getPlayerId());
+        byteBuf.writeIntLE(operation.getOperationType());
+        if (operation.getOperationType() == NinjaOperationTypeEnum.MOVE){
+            FVector3 position = operation.getPosition();
+            byteBuf.writeLongLE(position.getX());
+            byteBuf.writeLongLE(position.getZ());
+        }
+        byteBuf.writeIntLE(operation.getDirection());
     }
 }

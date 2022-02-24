@@ -1,5 +1,6 @@
 package com.bananna.ninja.service;
 
+import com.bananna.ninja.entity.FrameSyncRoom;
 import com.bananna.ninja.entity.Room;
 
 

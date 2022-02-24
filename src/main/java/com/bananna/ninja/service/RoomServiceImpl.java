@@ -1,6 +1,8 @@
 package com.bananna.ninja.service;
 
+import com.bananna.ninja.entity.FrameSyncRoom;
 import com.bananna.ninja.entity.Room;
+import com.bananna.ninja.entity.StateSyncRoom;
 import org.springframework.stereotype.Component;
 
 import java.lang.ref.WeakReference;
@@ -23,7 +25,7 @@ public class RoomServiceImpl implements RoomService{
             room = roomMap.get(roomNumber);
         }
         else{
-            room = new Room(roomNumber, executor);
+            room = new StateSyncRoom(roomNumber, executor);
             roomMap.put(roomNumber, room);
         }
         roomMapByPlayerId.put(playerId, new WeakReference<>(room));

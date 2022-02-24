@@ -9,7 +9,7 @@ public class NinjaOperationMessage extends NinjaMessage{
     private BattleOperation operation;
 
     public NinjaOperationMessage(int playerId, BattleOperation operation){
-        super(NinjaMessageTypeEnum.ENTER, playerId);
+        super(NinjaMessageTypeEnum.OPERATION, playerId);
         this.operation = operation;
     }
 }

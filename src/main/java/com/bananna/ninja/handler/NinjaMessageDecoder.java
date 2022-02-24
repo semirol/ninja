@@ -60,11 +60,9 @@ public class NinjaMessageDecoder extends MessageToMessageDecoder<DatagramPacket>
                 long z = byteBuf.readLongLE();
                 battleOperation.setPosition(new FVector3(x, 0, z));
             }
-            else{
-                //读取方向
-                int direction = byteBuf.readIntLE();
-                battleOperation.setDirection(direction);
-            }
+            //读取方向
+            int direction = byteBuf.readIntLE();
+            battleOperation.setDirection(direction);
             NinjaOperationMessage message = new NinjaOperationMessage(playerId, battleOperation);
             out.add(message);
         }

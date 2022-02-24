@@ -1,6 +1,6 @@
 package com.bananna.ninja.handler;
 
-import com.bananna.ninja.entity.Player;
+import com.bananna.ninja.entity.FrameSyncRoom;
 import com.bananna.ninja.entity.Room;
 import com.bananna.ninja.message.NinjaReadyMessage;
 import com.bananna.ninja.service.PlayerService;
